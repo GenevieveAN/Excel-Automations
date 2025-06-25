@@ -6,7 +6,7 @@
  * for rows with checked checkboxes (boolean TRUE), and copies those rows into 
  * a new worksheet called "Checked Rows".
  * 
- * Author: [Your Name or GitHub Handle]
+ * Author: [GenevieveAN]
  * Last Updated: 2025-06-25
  */
 
