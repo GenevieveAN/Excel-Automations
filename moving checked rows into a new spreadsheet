@@ -1,21 +1,41 @@
+/**
+ * Office Script: Move Rows with Checked Checkboxes from All Sheets to a New Sheet
+ * 
+ * Description:
+ * This script loops through every worksheet in the workbook, looks at Column A 
+ * for rows with checked checkboxes (boolean TRUE), and copies those rows into 
+ * a new worksheet called "Checked Rows".
+ * 
+ * Author: [Your Name or GitHub Handle]
+ * Last Updated: 2025-06-25
+ */
+
 function main(workbook: ExcelScript.Workbook) {
+  // Create a new worksheet to hold all the rows with checkboxes marked TRUE
   let destinationSheet = workbook.addWorksheet("Checked Rows");
   let destinationRow = 0;
 
+  // Get all worksheets in the workbook
   let allSheets = workbook.getWorksheets();
 
+  // Loop through each worksheet
   for (let sheet of allSheets) {
+    // Skip the destination sheet (we don't want to copy from it into itself)
     if (sheet.getName() === "Checked Rows") continue;
 
+    // Get the used range (all the non-empty cells) in the current sheet
     let usedRange = sheet.getUsedRange();
-    if (!usedRange) continue;
+    if (!usedRange) continue; // Skip empty sheets
 
     let rowCount = usedRange.getRowCount();
     let colCount = usedRange.getColumnCount();
 
+    // Loop through each row in the used range
     for (let i = 0; i < rowCount; i++) {
-      let cellValue = usedRange.getCell(i, 0).getValue(); // Column A
+      // Get the value from Column A (index 0) of the current row
+      let cellValue = usedRange.getCell(i, 0).getValue();
 
+      // If the checkbox is checked (value is TRUE), copy the entire row
       if (cellValue === true) {
         let sourceRow = usedRange.getRow(i);
         let destination = destinationSheet.getRangeByIndexes(destinationRow, 0, 1, colCount);
