@@ -1,0 +1,27 @@
+function main(workbook: ExcelScript.Workbook) {
+  let destinationSheet = workbook.addWorksheet("Checked Rows");
+  let destinationRow = 0;
+
+  let allSheets = workbook.getWorksheets();
+
+  for (let sheet of allSheets) {
+    if (sheet.getName() === "Checked Rows") continue;
+
+    let usedRange = sheet.getUsedRange();
+    if (!usedRange) continue;
+
+    let rowCount = usedRange.getRowCount();
+    let colCount = usedRange.getColumnCount();
+
+    for (let i = 0; i < rowCount; i++) {
+      let cellValue = usedRange.getCell(i, 0).getValue(); // Column A
+
+      if (cellValue === true) {
+        let sourceRow = usedRange.getRow(i);
+        let destination = destinationSheet.getRangeByIndexes(destinationRow, 0, 1, colCount);
+        destination.copyFrom(sourceRow, ExcelScript.RangeCopyType.all, false, false);
+        destinationRow++;
+      }
+    }
+  }
+}
